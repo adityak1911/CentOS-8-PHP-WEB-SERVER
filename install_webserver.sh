@@ -7,12 +7,20 @@
 
 if sudo dnf -y update 2>&1 | grep -q "Failed to download metadata for repo 'AppStream': Cannot prepare internal mirrorlist: No URLs in mirrorlist"; then
     echo "Failed to update using AppStream repository. Trying with a different repository."
+
+    cd /etc/yum.repos.d/
+    sudo sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+    sudo sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+    sudo yum update -y
     
     wget 'http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/Packages/centos-gpg-keys-8-3.el8.noarch.rpm'
     sudo rpm -i 'centos-gpg-keys-8-3.el8.noarch.rpm'
     dnf --disablerepo '*' --enablerepo=extras swap centos-linux-repos centos-stream-repos
-
+    
     sudo dnf -y distro-sync
+    
+    rm -f centos-gpg-keys-8-3.el8.noarch.rpm
+    
 else
     echo "Package lists updated successfully."
 
