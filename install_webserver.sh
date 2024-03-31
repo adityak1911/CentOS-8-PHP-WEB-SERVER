@@ -1,4 +1,27 @@
 #!/bin/bash
+
+
+# centos update reference
+#https://techglimpse.com/failed-metadata-repo-appstream-centos-8/
+# Update package lists
+
+if sudo dnf -y update 2>&1 | grep -q "Failed to download metadata for repo 'AppStream': Cannot prepare internal mirrorlist: No URLs in mirrorlist"; then
+    echo "Failed to update using AppStream repository. Trying with a different repository."
+    
+    cd /etc/yum.repos.d/
+    sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+    sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+    sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+    yum update -y
+    
+else
+    echo "Package lists updated successfully."
+fi
+
+
+
+cd /
+
 sudo -y dnf update
 sudo -y dnf install php php-fpm php-mysqlnd php-common php-curl php-json php-mbstring php-xml php-zip
 
