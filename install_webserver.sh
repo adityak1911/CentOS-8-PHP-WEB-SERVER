@@ -8,21 +8,20 @@
 if sudo dnf -y update 2>&1 | grep -q "Failed to download metadata for repo 'AppStream': Cannot prepare internal mirrorlist: No URLs in mirrorlist"; then
     echo "Failed to update using AppStream repository. Trying with a different repository."
     
-    cd /etc/yum.repos.d/
-    sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
-    sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
-    sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
-    yum update -y
-    
+    wget 'http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/Packages/centos-gpg-keys-8-3.el8.noarch.rpm'
+    sudo rpm -i 'centos-gpg-keys-8-3.el8.noarch.rpm'
+    dnf --disablerepo '*' --enablerepo=extras swap centos-linux-repos centos-stream-repos
+
+    sudo dnf -y distro-sync
 else
     echo "Package lists updated successfully."
-fi
 
+fi
 
 
 cd /
 
-sudo -y dnf update
+
 sudo -y dnf install php php-fpm php-mysqlnd php-common php-curl php-json php-mbstring php-xml php-zip
 
 # Install Apache
@@ -35,7 +34,7 @@ sudo systemctl start httpd
 sudo systemctl enable httpd
 
 # Install MariaDB
-sudo yum install mariadb-server
+sudo yum -y install mariadb-server
 
 # Start MariaDB
 sudo systemctl start mariadb
@@ -56,7 +55,7 @@ sudo systemctl restart httpd
 sudo chown -R apache.apache /var/www/html/
 
 # Create a PHP info file
-sudo vi /var/www/html/info.php
+echo "<?php phpinfo(); ?>" | sudo tee /var/www/html/info.php >/dev/null
 
 
 # Update package lists
@@ -69,9 +68,6 @@ sudo dnf -y install php php-mysqlnd php-opcache php-gd php-curl php-json php-zip
 
 sudo dnf -y install epel-release
 sudo dnf -y install certbot python3-certbot-apache mod_ssl
-
-
-
 
 
 #giving permission to write all files to apache
