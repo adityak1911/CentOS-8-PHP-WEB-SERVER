@@ -53,7 +53,7 @@ chmod -R 775 "$doc_root"
 
 
 # Reload Apache to apply changes
-systemctl reload httpd
+systemctl restart httpd
 
 sleep 2
 
@@ -115,7 +115,7 @@ fi
 
 
 # Reload Apache to apply changes
-systemctl reload httpd
+systemctl restart httpd
 
 echo "Apache configuration file created for $domain_name"
 echo "Document root: $doc_root"
