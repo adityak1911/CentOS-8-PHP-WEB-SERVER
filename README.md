@@ -3,7 +3,11 @@ CentOS 8 virtual machine for website hosting. This repository offers clear instr
 
 
 
-To Exxecute Webserver Instalation Command Run
+<br>
+<b>To Exxecute Webserver Instalation Command Run</b>
+<br>
 curl -O https://raw.githubusercontent.com/adityak1911/CentOS-8-PHP-WEB-SERVER/main/install_webserver.sh
+<br>
 chmod +x install_webserver.sh
+<br>
 ./install_webserver.sh
