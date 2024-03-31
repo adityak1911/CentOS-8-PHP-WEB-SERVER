@@ -2,7 +2,7 @@
 
 
 # centos update reference
-#https://techglimpse.com/failed-metadata-repo-appstream-centos-8/
+#https://stackoverflow.com/questions/70963985/error-failed-to-download-metadata-for-repo-appstream-cannot-prepare-internal
 # Update package lists
 
 if sudo dnf -y update 2>&1 | grep -q "Failed to download metadata for repo 'AppStream': Cannot prepare internal mirrorlist: No URLs in mirrorlist"; then
