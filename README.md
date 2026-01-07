@@ -6,7 +6,7 @@ CentOS 10 virtual machine for website hosting. This repository offers clear inst
 <br>
 <b>To Execute Webserver Instalation Command Run</b>
 <br>
-curl -O [https://raw.githubusercontent.com/adityak1911/CentOS-8-PHP-WEB-SERVER/main/install_webserver.sh](https://raw.githubusercontent.com/adityak1911/CentOS-8-PHP-WEB-SERVER/refs/heads/centos-10/install_webserver.sh)
+curl -O https://raw.githubusercontent.com/adityak1911/CentOS-8-PHP-WEB-SERVER/refs/heads/centos-10/install_webserver.sh
 <br>
 chmod +x install_webserver.sh
 <br>
