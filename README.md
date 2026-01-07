@@ -1,12 +1,12 @@
-# CentOS-8-PHP-WEB-SERVER
-CentOS 8 virtual machine for website hosting. This repository offers clear instructions, from installation to configuration, ensuring a smooth and secure hosting environment. Perfect for beginners and seasoned users alike, maximize CentOS 8's stability for your web projects effortlessly.
+# CentOS-10-PHP-WEB-SERVER
+CentOS 10 virtual machine for website hosting. This repository offers clear instructions, from installation to configuration, ensuring a smooth and secure hosting environment. Perfect for beginners and seasoned users alike, maximize CentOS 8's stability for your web projects effortlessly.
 
 
 
 <br>
 <b>To Execute Webserver Instalation Command Run</b>
 <br>
-curl -O https://raw.githubusercontent.com/adityak1911/CentOS-8-PHP-WEB-SERVER/main/install_webserver.sh
+curl -O [https://raw.githubusercontent.com/adityak1911/CentOS-8-PHP-WEB-SERVER/main/install_webserver.sh](https://raw.githubusercontent.com/adityak1911/CentOS-8-PHP-WEB-SERVER/refs/heads/centos-10/install_webserver.sh)
 <br>
 chmod +x install_webserver.sh
 <br>
