@@ -5,27 +5,42 @@
 #https://stackoverflow.com/questions/70963985/error-failed-to-download-metadata-for-repo-appstream-cannot-prepare-internal
 # Update package lists
 
-if sudo dnf -y update 2>&1 | grep -q "Failed to download metadata for repo 'AppStream': Cannot prepare internal mirrorlist: No URLs in mirrorlist"; then
-    echo "Failed to update using AppStream repository. Trying with a different repository."
+# centos stream 10 update reference
+# Fix for "Failed to download metadata for repo 'appstream'"
+# Updated for CentOS Stream 10 mirrors
 
+if sudo dnf -y update 2>&1 | grep -q "Failed to download metadata for repo"; then
+    echo "Mirrorlist issue detected. Switching to static Stream 10 Base URLs..."
+
+    # 1. Enter the repo directory
     cd /etc/yum.repos.d/
-    sudo sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
-    sudo sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
-    sudo yum update -y
-    
-    wget 'http://mirror.centos.org/centos/8-stream/BaseOS/x86_64/os/Packages/centos-gpg-keys-8-3.el8.noarch.rpm'
-    sudo rpm -i 'centos-gpg-keys-8-3.el8.noarch.rpm'
-    dnf --disablerepo '*' --enablerepo=extras swap centos-linux-repos centos-stream-repos
+
+    # 2. Comment out mirrorlist and swap baseurl to the official Stream 10 mirror
+    # Note: Stream 10 repo files are usually named centos.repo or centos-addons.repo
+    sudo sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/centos*.repo
+    sudo sed -i 's|#baseurl=http://mirror.centos.org|baseurl=https://mirror.stream.centos.org|g' /etc/yum.repos.d/centos*.repo
+
+    # 3. Specifically target the 10-stream path
+    # This ensures the baseurl points to the correct version directory
+    sudo sed -i 's|baseurl=https://mirror.stream.centos.org/centos/\$releasever|baseurl=https://mirror.stream.centos.org/10-stream|g' /etc/yum.repos.d/centos*.repo
+
+    # 4. Clean and update
+    sudo dnf clean all
+    sudo dnf -y update
+
+    # 5. Handle GPG Keys if necessary 
+    # (Stream 10 keys are usually bundled, but this fetches the official release key if missing)
+    wget https://www.centos.org/keys/RPM-GPG-KEY-CentOS-Official
+    sudo rpm --import RPM-GPG-KEY-CentOS-Official
     
     sudo dnf -y distro-sync
     
-    rm -f centos-gpg-keys-8-3.el8.noarch.rpm
+    rm -f RPM-GPG-KEY-CentOS-Official
     
 else
     echo "Package lists updated successfully."
-
 fi
-
+    
 
 cd /
 
